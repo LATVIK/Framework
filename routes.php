@@ -1,6 +1,6 @@
 <?php
 return [
-    '' => \Controllers\Controller::class,
-    'profile' => \Controllers\profileController::class,
-    'my-posts' => \Controllers\MyPostController::class,
+    '' => \controllers\Controller::class,
+    'profile' => \controllers\profileController::class,
+    'my-posts' => \controllers\MyPostController::class,
 ];

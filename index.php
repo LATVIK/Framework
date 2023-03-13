@@ -7,5 +7,5 @@ $route = [];
 if (isset($_GET['route'])) {
     $route = explode('/', $_GET['route']);
 }
-$controller = new Controllers\MainController();
+$controller = new controllers\MainController();
 $controller->main($route);
