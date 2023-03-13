@@ -1,5 +1,5 @@
 <?php
-include 'include.php';
+include 'service/include/func.php';
 
 spl_autoload_register('myAutoloader');
 

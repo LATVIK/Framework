@@ -7,7 +7,7 @@ class MainController extends BaseController
     public function buildingARoute(array $route)
     {
         $controllerName = array_shift($route);
-        $routes = require 'routes.php';
+        $routes = require 'service/include/routes.php';
 
         if (key_exists($controllerName, $routes)) {
             $controller = new $routes[$controllerName]();
