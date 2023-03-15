@@ -6,7 +6,16 @@ class MyPostController extends BaseController
 {
     public function indexAction()
     {
-        include "service/include/tmp_post_data.php";
+//         change to Post::findByAuthorId()... or call a procedure from DB.
+//        $posts = Database::getInstance()->query(
+//            "SELECT * FROM posts WHERE posts.author_id= :authorId",
+//            [':authorId' => $param['authorId']],
+//            Post::class
+//        );
         include 'views/posts.php';
+    }
+
+    public function editAction(){
+
     }
 }
