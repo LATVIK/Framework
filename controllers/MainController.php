@@ -17,12 +17,6 @@ class MainController extends BaseController
         }
     }
 
-    public function getUnknownPage()
-    {
-        http_response_code(404);
-        include 'views/unknown_page.php';
-    }
-
     public function addHead()
     {
         include 'views/default/head.html';

@@ -76,7 +76,7 @@ abstract class BaseModel
         $sql = 'INSERT INTO '
             . static::getTableName()
             . ' (' . implode(', ', array_keys($properties))
-            . ') VALUES (' . str_repeat(' ? ,', count($properties)-1) . '? );';
+            . ') VALUES (' . str_repeat(' ? ,', count($properties) - 1) . '? );';
 
         $db = DataBase::getInstance();
         $db->query($sql, array_values($properties), static::class);
@@ -102,10 +102,28 @@ abstract class BaseModel
     {
         $db = DataBase::getInstance();
         $entities = $db->query(
-            'SELECT * FROM ' . static::getTableNAme() . ' WHERE id=:id ORDER BY id DESC;',
-            ['id' => $id],
+            'SELECT * FROM ' . static::getTableNAme() . ' WHERE ' . $columnName . '= :value ORDER BY id DESC;',
+            [':value' => $value],
             static::class
         );
-        return $entities ? $entities[0] : null;
+
+        return $entities ? $entities : null;
+    }
+
+    public static function findOneByColumn(string $columnName, $value): ?self
+    {
+        $db = DataBase::getInstance();
+        $entity = $db->query(
+            'SELECT * FROM ' . static::getTableNAme() . ' WHERE ' . $columnName . '= :value LIMIT 1;',
+            [':value' => $value],
+            static::class
+        );
+
+        return $entity[0];
+    }
+
+    public static function findById(int $id): ?self
+    {
+        return self::findOneByColumn('id', $id);
     }
 }

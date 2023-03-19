@@ -117,6 +117,7 @@ body {
   border-radius: 20px;
   background: #FFFFFF;
   box-sizing: border-box;
+  display: inline-block;
 }
 
 .main-card input,
@@ -154,8 +155,11 @@ body {
   height: 220px;
 }
 
-#new-user-form {
+.new-user-card {
   width: 460px;
+}
+
+#new-user-form {
   height: 395px;
 }
 
@@ -274,8 +278,28 @@ body {
   margin: 5px;
 }
 
+.error {
+  background: red;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.success {
+  background: #02e802;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.2em;
+}
 
 .column {
   flex-flow: column;
   width: 100%;
+}
+
+.center {
+  display: flex;
+  margin: auto;
 }

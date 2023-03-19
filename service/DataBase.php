@@ -20,7 +20,7 @@ class DataBase
         $this->pdo->exec('SET NAMES UTF8');
     }
 
-    public function query(string $sql, $params = [], $className = 'stdClass')
+    public function query(string $sql, $params = [], $className = 'stdClass'): ?array
     {
         $sth = $this->pdo->prepare($sql);
         $result = $sth->execute($params);
@@ -32,7 +32,7 @@ class DataBase
         return $sth->fetchAll(\PDO::FETCH_CLASS, $className);
     }
 
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new self();

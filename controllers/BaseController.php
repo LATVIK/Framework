@@ -13,6 +13,15 @@ abstract class BaseController
         $action .= 'Action';
         if (method_exists($this, $action)) {
             $this->$action($route);
+        } else {
+            $this->getUnknownPage();
         }
+    }
+
+
+    public function getUnknownPage()
+    {
+        http_response_code(404);
+        include 'views/unknown_page.php';
     }
 }
