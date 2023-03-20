@@ -149,4 +149,37 @@ class User extends BaseModel
 
         return $user;
     }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function login(array $loginData): User
+    {
+        if (empty($loginData['email'])) {
+            throw new InvalidArgumentException("Empty email");
+        }
+
+        if (empty($loginData['password'])) {
+            throw new InvalidArgumentException("Empty password");
+        }
+
+        $user = User::findOneByColumn('email', $loginData['email']);
+        if ($user === null) {
+            throw new InvalidArgumentException("User with this email does not exist");
+        }
+
+        if (!password_verify($loginData['password'], $user->getPasswordHash())) {
+            throw new InvalidArgumentException('Incorrect password');
+        }
+
+        $user->refreshAuthToken();
+        $user->save();
+
+        return $user;
+    }
+
+    private function refreshAuthToken()
+    {
+        $this->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
+    }
 }

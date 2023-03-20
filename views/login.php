@@ -1,4 +1,11 @@
-<div class="column">
+<div class="column center">
+    <?php
+    if (!empty($error)) :?>
+      <div class="main-card error new-user-card">
+          <?= $error; ?>
+      </div>
+    <?php endif; ?>
+
   <div class="main-card">
     <form id="login-input" class="card-form" method="post">
       <label class="center-text">Login</label>
