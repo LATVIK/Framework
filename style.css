@@ -21,6 +21,15 @@ body {
   padding-top: 11px;
 }
 
+.header a {
+  text-decoration: none;
+  color: #444444;
+}
+
+.header a:visited {
+  color: #444444;
+}
+
 #navigation {
   display: flex;
   justify-content: center;
@@ -41,11 +50,6 @@ body {
 
 #navigation ul li:not(:first-child) {
   margin-left: 35px;
-}
-
-#navigation a {
-  text-decoration: none;
-  color: #444444;
 }
 
 #navigation a:visited {

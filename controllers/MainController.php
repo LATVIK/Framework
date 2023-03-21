@@ -25,7 +25,7 @@ class MainController extends BaseController
 
     public function addHeader()
     {
-        include 'views/default/header.html';
+        include 'views/default/header.php';
     }
 
     public function addFooter()

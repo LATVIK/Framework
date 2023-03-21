@@ -17,15 +17,13 @@
 
   <!--  TODO: Update after implementing user authorization -->
   <div id="gt-account-title">
-    Account
-    <!--    <?php if(true):?>-->
-    <!--      Hi, <a href=" "> {Username} </a>>-->
-    <!--      <a>Log out </a>>-->
-
-    <!--    <?php else: ?>-->
-    <!--      <a href="        ">Log in</a>-->
-
-    <!--    <?php endif;?>-->
+      <?php
+      if (!$this->user) {
+          echo "<a href='/login'>Log in</a>";
+      } else {
+          echo '<a href="/profile">Hello, ' . $this->user->getUsername() . '</a>';
+      }
+      ?>
   </div>
 
 </header>
