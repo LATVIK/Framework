@@ -4,9 +4,11 @@ include 'service/include/settings.php';
 
 spl_autoload_register('myAutoloader');
 
-$route = [];
+$user = \service\UsersAuthService::getUserByToken();
+
+$route = '';
 if (isset($_GET['route'])) {
-    $route = explode('/', $_GET['route']);
+    $route = $_GET['route'];
 }
-$controller = new controllers\MainController();
+$controller = new controllers\MainController($user);
 $controller->main($route);

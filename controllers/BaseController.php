@@ -2,19 +2,19 @@
 
 namespace controllers;
 
+use models\User;
+use service\UsersAuthService;
+
 abstract class BaseController
 {
-    public function main(array $route)
+    protected ?User $user;
+
+    public function __construct(User $user = null)
     {
-        $action = array_shift($route);
-        if (!$action) {
-            $action = 'index';
-        }
-        $action .= 'Action';
-        if (method_exists($this, $action)) {
-            $this->$action($route);
+        if (!$user) {
+            $this->user = UsersAuthService::getUserByToken();
         } else {
-            $this->getUnknownPage();
+            $this->user = $user;
         }
     }
 

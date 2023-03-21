@@ -6,7 +6,7 @@ use models\Post;
 
 class Controller extends BaseController
 {
-    public function indexAction(array $param)
+    public function indexAction()
     {
         $posts = Post::findAll();
         include 'views/posts.php';

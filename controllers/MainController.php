@@ -4,14 +4,15 @@ namespace controllers;
 
 class MainController extends BaseController
 {
-    public function buildingARoute(array $route)
+    public function buildingARoute(string $route)
     {
-        $controllerName = array_shift($route);
         $routes = require 'service/include/routes.php';
 
-        if (key_exists($controllerName, $routes)) {
-            $controller = new $routes[$controllerName]();
-            $controller->main($route);
+        if (key_exists($route, $routes)) {
+            $controllerName = $routes[$route][0];
+            $actionName = $routes[$route][1];
+            $controller = new $controllerName($this->user);
+            $controller->$actionName();
         } else {
             $this->getUnknownPage();
         }
@@ -32,7 +33,7 @@ class MainController extends BaseController
         include 'views/default/footer.html';
     }
 
-    public function main(array $route)
+    public function main(string $route)
     {
         $this->addHead();
         echo '<body>';
