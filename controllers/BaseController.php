@@ -18,10 +18,17 @@ abstract class BaseController
         }
     }
 
-
     public function getUnknownPage()
     {
         http_response_code(404);
         include 'views/unknown_page.php';
+    }
+
+    protected function checkAuthorization()
+    {
+        if (!$this->user) {
+            header('Location: /login');
+            exit();
+        }
     }
 }
