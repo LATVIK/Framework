@@ -1,9 +1,9 @@
 <?php
 return [
-    '' => [\controllers\Controller::class, 'indexAction'],
-    'profile' => [\controllers\ProfileController::class, 'indexAction'],
-    'my-posts' => [\controllers\MyPostController::class, 'myPostsAction'],
-    'login' => [\controllers\UserController::class, 'loginAction'],
+    '' => [\controllers\PostController::class, 'indexAction'],
+    'my-posts' => [\controllers\PostController::class, 'myPostsAction'],
     'sign-up' => [\controllers\UserController::class, 'signUpAction'],
+    'login' => [\controllers\UserController::class, 'loginAction'],
+    'profile' => [\controllers\UserController::class, 'profileAction'],
 
 ];

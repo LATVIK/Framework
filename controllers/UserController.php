@@ -20,9 +20,8 @@ class UserController extends BaseController
             }
             if ($user instanceof User) {
                 $success = 'Account registered successfully';
-                include "views/sign_up.php";
-                return;
-                //TODO: change to profile (this->indexAction(){... include "...profile.php" ...}
+                header('Location: /profile');
+                exit();
             }
         }
 
@@ -42,5 +41,10 @@ class UserController extends BaseController
             }
         }
         include 'views/login.php';
+    }
+
+    public function profileAction()
+    {
+        include "views/profile.php";
     }
 }
