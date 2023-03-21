@@ -138,7 +138,7 @@ class User extends BaseModel
         $iconName = '';
 
         if ($userIcon['name'] != '') {
-            $iconName = mt_rand(0, 100000) . $userIcon['name'];
+            $iconName = uniqid();
             copy($userIcon['tmp_name'], 'res/photo/' . $iconName);
         }
 
