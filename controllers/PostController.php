@@ -8,7 +8,7 @@ class PostController extends BaseController
 {
     public function indexAction()
     {
-        $posts = Post::findAll();
+        $posts = Post::findAll($_GET['search'] ?? '');
         $this->displayPosts($posts);
     }
 
@@ -16,13 +16,13 @@ class PostController extends BaseController
     {
         $this->checkAuthorization();
         $this->displayCreatePostForm();
-        $posts = Post::findByAuthor($this->user->getId());
+        $posts = Post::findByAuthor($this->user->getId(), $_GET['search'] ?? '');
         $this->displayPosts($posts);
     }
 
     private function displayPosts(?array $posts)
     {
-        if (is_array($posts)) {
+        if ($posts) {
             include 'views/posts.php';
         } else {
             echo '<h2>Posts no found</h2>';

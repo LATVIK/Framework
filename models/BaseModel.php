@@ -18,6 +18,11 @@ abstract class BaseModel
         $this->id = $id;
     }
 
+    public static function getTableName(): string
+    {
+        return '';
+    }
+
     public function __set($name, $value)
     {
         $camelCaseName = $this->underscoreToCamelCase($name);
@@ -92,29 +97,43 @@ abstract class BaseModel
         $this->id = null;
     }
 
-    public static function findAll(): array
+    public static function findAll($search = ''): ?array
     {
         $db = DataBase::getInstance();
-        return $db->query('SELECT * FROM ' . static::getTableNAme() . ' ORDER by id DESC;', [], static::class);
+        $condition = '';
+        if ($search) {
+            $condition = " WHERE title LIKE '%$search%'";
+        }
+        $entities = $db->query('SELECT * FROM ' . static::getTableName()
+            . $condition
+            . ' ORDER by id DESC;', [], static::class);
+        return $entities ?? null;
     }
 
-    public static function findByColumn(string $columnName, $value): ?array
+    public static function findByColumn(string $columnName, $value, $search = ''): ?array
     {
         $db = DataBase::getInstance();
+        $condition = '';
+        if ($search) {
+            $condition = " AND title LIKE '%$search%'";
+        }
         $entities = $db->query(
-            'SELECT * FROM ' . static::getTableNAme() . ' WHERE ' . $columnName . '= :value ORDER BY id DESC;',
+            'SELECT * FROM '
+            . static::getTableName() . ' WHERE '
+            . $columnName . '= :value '
+            . $condition . 'ORDER BY id DESC;',
             [':value' => $value],
             static::class
         );
 
-        return $entities ? $entities : null;
+        return $entities ?? null;
     }
 
     public static function findOneByColumn(string $columnName, $value): ?self
     {
         $db = DataBase::getInstance();
         $entity = $db->query(
-            'SELECT * FROM ' . static::getTableNAme() . ' WHERE ' . $columnName . '= :value LIMIT 1;',
+            'SELECT * FROM ' . static::getTableName() . ' WHERE ' . $columnName . '= :value LIMIT 1;',
             [':value' => $value],
             static::class
         );

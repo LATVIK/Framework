@@ -59,8 +59,8 @@ class Post extends BaseModel
         return 'posts';
     }
 
-    public static function findByAuthor(int $authorId): ?array
+    public static function findByAuthor(int $authorId, $search = ''): ?array
     {
-        return Post::findByColumn('author_id', $authorId);
+        return Post::findByColumn('author_id', $authorId, $search);
     }
 }
