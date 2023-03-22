@@ -14,12 +14,15 @@ class UserController extends BaseController
             $user = null;
 
             try {
+                //$user with empty id
                 $user = User::signUp($_POST, $_FILES['icon']);
+                //Get filled user
+                $user = User::findOneByColumn('username', $user->getUsername());
+                UsersAuthService::createToken($user);
             } catch (InvalidArgumentException $exception) {
                 $error = $exception->getMessage();
             }
             if ($user instanceof User) {
-                $success = 'Account registered successfully';
                 header('Location: /profile');
                 exit();
             }
@@ -45,6 +48,18 @@ class UserController extends BaseController
 
     public function profileAction()
     {
+        if (isset($_GET['search'])) {
+            header('Location: /?search=' . $_GET['search']);
+        }
+        $this->checkAuthorization();
+
         include "views/profile.php";
+    }
+
+    public function exitAction(): void
+    {
+        UsersAuthService::deleteToken();
+        header('Location: /login');
+        exit();
     }
 }

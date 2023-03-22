@@ -13,7 +13,7 @@
       </div>
     <?php endif; ?>
   <div class="main-card">
-    <form id="new-user-form" class="card-form new-user-card" action="/user/signUp" method="post"
+    <form id="new-user-form" class="card-form new-user-card" action="/sign-up" method="post"
           enctype="multipart/form-data">
       <label class="center-text">New account</label>
 

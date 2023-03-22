@@ -143,7 +143,7 @@ class User extends BaseModel
         }
 
         $user->icon = $iconName;
-        $user->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
+        $user->refreshAuthToken();
 
         $user->save();
 
