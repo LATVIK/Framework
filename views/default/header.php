@@ -14,6 +14,9 @@
           <button id="search-posts-btn" type="submit"><img src="../../res/icons/search.svg" alt="search"></button>
         </form>
       </li>
+      <li>
+        <a href="profile">Profile</a>
+      </li>
     </ul>
   </div>
 
@@ -23,7 +26,7 @@
       if (!$this->user) {
           echo "<a href='/login'>Log in</a>";
       } else {
-          echo '<a href="/profile">Hello, ' . $this->user->getUsername() . '</a>';
+          echo '</a> <span><a href="/exit" >Log out</a></span>';
       }
                  ?>
   </div>

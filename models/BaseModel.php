@@ -18,10 +18,7 @@ abstract class BaseModel
         $this->id = $id;
     }
 
-    public static function getTableName(): string
-    {
-        return '';
-    }
+    abstract protected static function getTableName(): string;
 
     public function __set($name, $value)
     {
