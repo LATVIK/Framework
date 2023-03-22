@@ -26,7 +26,7 @@
   </div>
   <div id="gt-registration" class="main-card">
     New user?&nbsp&nbsp
-    <a href="sign_up.php"> Create account!)</a>
+    <a href="/sign-up"> Create account!)</a>
 
   </div>
 </div>
