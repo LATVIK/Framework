@@ -6,7 +6,7 @@ class Post extends BaseModel
 {
     protected string $title;
     protected string $text;
-    protected string $createdDt;
+    protected $createdDt;
     protected int $authorId;
 
     public function getTitle(): string
