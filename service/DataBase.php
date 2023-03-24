@@ -29,7 +29,11 @@ class DataBase
             return null;
         }
 
-        return $sth->fetchAll(\PDO::FETCH_CLASS, $className);
+        $result = $sth->fetchAll(\PDO::FETCH_CLASS, $className);
+        if(empty($result)){
+            return null;
+    }
+        return $result;
     }
 
     public static function getInstance(): self
