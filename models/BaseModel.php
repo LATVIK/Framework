@@ -38,7 +38,7 @@ abstract class BaseModel
     {
         $db = DataBase::getInstance();
         $db->query(
-            'DELETE FROM `'.static::getTableName().'` WHERE id = :id',
+            'DELETE FROM `' . static::getTableName() . '` WHERE id = :id',
             [':id' => $this->id]
         );
         $this->id = null;
@@ -51,9 +51,9 @@ abstract class BaseModel
         if ($search) {
             $condition = " WHERE title LIKE '%{$search}%'";
         }
-        $entities = $db->query('SELECT * FROM '.static::getTableName()
-            .$condition
-            .' ORDER by id DESC;', [], static::class);
+        $entities = $db->query('SELECT * FROM ' . static::getTableName()
+            . $condition
+            . ' ORDER by id DESC;', [], static::class);
 
         return $entities ?? null;
     }
@@ -67,9 +67,9 @@ abstract class BaseModel
         }
         $entities = $db->query(
             'SELECT * FROM '
-            .static::getTableName().' WHERE '
-            .$columnName.'= :value '
-            .$condition.'ORDER BY id DESC;',
+            . static::getTableName() . ' WHERE '
+            . $columnName . '= :value '
+            . $condition . 'ORDER BY id DESC;',
             [':value' => $value],
             static::class
         );
@@ -77,11 +77,11 @@ abstract class BaseModel
         return $entities ?? null;
     }
 
-    public static function findOneByColumn(string $columnName, $value): ?self
+    public static function findOneByColumn(string $columnName, $value): ?static
     {
         $db = DataBase::getInstance();
         $entity = $db->query(
-            'SELECT * FROM '.static::getTableName().' WHERE '.$columnName.'= :value LIMIT 1;',
+            'SELECT * FROM ' . static::getTableName() . ' WHERE ' . $columnName . '= :value LIMIT 1;',
             [':value' => $value],
             static::class
         );
@@ -92,9 +92,9 @@ abstract class BaseModel
         return null;
     }
 
-    public static function findById(int $id): ?self
+    public static function findById(int $id): ?static
     {
-        return self::findOneByColumn('id', $id);
+        return static::findOneByColumn('id', $id);
     }
 
     abstract protected static function getTableName(): string;
@@ -127,9 +127,9 @@ abstract class BaseModel
     private function update(array $properties): void
     {
         $sql = 'UPDATE '
-            .static::getTableName()
-            .' SET '.implode('= ? , ', array_keys($properties)).'= ?'
-            .' WHERE id = '.$this->id;
+            . static::getTableName()
+            . ' SET ' . implode('= ? , ', array_keys($properties)) . '= ?'
+            . ' WHERE id = ' . $this->id;
         $db = DataBase::getInstance();
         $db->query($sql, array_values($properties), static::class);
     }
@@ -139,9 +139,9 @@ abstract class BaseModel
         $properties = array_filter($properties);
 
         $sql = 'INSERT INTO '
-            .static::getTableName()
-            .' ('.implode(', ', array_keys($properties))
-            .') VALUES ('.str_repeat(' ? ,', count($properties) - 1).'? );';
+            . static::getTableName()
+            . ' (' . implode(', ', array_keys($properties))
+            . ') VALUES (' . str_repeat(' ? ,', count($properties) - 1) . '? );';
 
         $db = DataBase::getInstance();
         $db->query($sql, array_values($properties), static::class);
