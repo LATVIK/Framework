@@ -12,11 +12,13 @@ $creator = $post->getAuthor();
   <div>
     <h3><?= $post->getTitle() ?></h3>
       <?php
-      if ($this->user->getId() == $creator->getID()) : ?>
-        <button class="delete">
-          <img src="../res/icons/delete.svg" onclick="deletePost(<?= $post->getId() ?>)" alt="x">
-        </button>
-      <?php endif; ?>
+        if ($this->user) :
+            if ($this->user->getId() == $creator->getID()) : ?>
+            <button class="delete">
+              <img src="../res/icons/delete.svg" onclick="deletePost(<?= $post->getId() ?>)" alt="x">
+            </button>
+            <?php endif;
+        endif; ?>
     <h4><?= $post->getCreatedDt(); ?></h4>
 
 
