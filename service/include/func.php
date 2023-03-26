@@ -2,5 +2,5 @@
 
 function myAutoloader(string $className)
 {
-    require_once '' . str_replace('\\', '/', $className) . '.php';
+    require_once ROOT . str_replace('\\', '/', $className) . '.php';
 }

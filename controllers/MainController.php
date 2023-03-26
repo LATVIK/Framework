@@ -33,6 +33,11 @@ class MainController extends BaseController
         include 'views/default/footer.html';
     }
 
+    public function addJs()
+    {
+        echo '<script src="../service/include/functions.js"></script>';
+    }
+
     public function main(string $route)
     {
         $this->addHead();
@@ -46,6 +51,7 @@ class MainController extends BaseController
         echo '</div>';
         echo '</div>';
         $this->addFooter();
+        $this->addJs();
         echo '</body>';
     }
 }

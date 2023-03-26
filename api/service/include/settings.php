@@ -5,5 +5,4 @@ const DB_NAME = 'for_post_php';
 const DB_USER = 'root';
 const DB_PASS = 'root';
 
-const ROOT = '';
-const PHOTO_ROOT = ROOT . '/res/photo';
+const ROOT = '../';

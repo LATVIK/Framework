@@ -2,7 +2,7 @@
 
 namespace service\Exception;
 
-class InvalidArgumentException extends \Exception
+class NoFoundException extends \Exception
 {
     protected $code = 404;
 }

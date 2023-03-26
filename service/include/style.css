@@ -207,7 +207,7 @@ body {
   overflow: hidden;
 }
 
-.post img {
+#creator-photo {
   width: 160px;
   height: 160px;
   margin: 20px;
@@ -222,6 +222,20 @@ body {
   float: right;
   margin: 20px;
   color: #444444;
+}
+
+.post .delete {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-right: 20px;
+  float: right;
+}
+
+.post .delete img{
+  height: 1rem;
+  width: 1rem;
+  float: right;
+  padding: 0;
 }
 
 .post-creator {
