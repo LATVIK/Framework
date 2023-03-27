@@ -25,7 +25,7 @@ class MainController extends BaseController
         $this->buildingARoute($route);
     }
 
-    public function getUnknownPage()
+    public function getUnknownPage(): void
     {
         http_response_code(404);
     }

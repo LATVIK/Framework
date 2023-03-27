@@ -24,7 +24,6 @@ class UserController extends BaseController
             }
             if ($user instanceof User) {
                 header('Location: /profile');
-                exit();
             }
         }
 
@@ -38,7 +37,6 @@ class UserController extends BaseController
                 $user = User::login($_POST);
                 UsersAuthService::createToken($user);
                 header('Location: /');
-                exit();
             } catch (InvalidArgumentException $e) {
                 $error = $e->getMessage();
             }
@@ -60,6 +58,5 @@ class UserController extends BaseController
     {
         UsersAuthService::deleteToken();
         header('Location: /login');
-        exit();
     }
 }

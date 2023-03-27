@@ -6,7 +6,7 @@ use service\DataBase;
 
 abstract class BaseModel
 {
-    protected $id;
+    protected ?int $id = null;
 
     public function __set($name, $value)
     {
@@ -14,7 +14,7 @@ abstract class BaseModel
         $this->{$camelCaseName} = $value;
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -24,7 +24,7 @@ abstract class BaseModel
         $this->id = $id;
     }
 
-    public function save()
+    public function save(): void
     {
         $properties = $this->mapPropertiesToDbFormat();
         if ($this->id !== null) {

@@ -6,7 +6,7 @@ class Post extends BaseModel
 {
     protected string $title;
     protected string $text;
-    protected $createdDt;
+    protected ?string $createdDt = null;
     protected int $authorId;
 
     public function getTitle(): string
@@ -32,11 +32,6 @@ class Post extends BaseModel
     public function getCreatedDt(): string
     {
         return $this->createdDt;
-    }
-
-    public function setCreatedDt(string $createdDt): void
-    {
-        $this->createdDt = $createdDt;
     }
 
     public function getAuthorId(): int

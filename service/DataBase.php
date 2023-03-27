@@ -8,7 +8,7 @@ class DataBase
 {
     private PDO $pdo;
 
-    private static $instance;
+    private static ?self $instance = null;
 
     private function __construct()
     {
@@ -29,10 +29,10 @@ class DataBase
             return null;
         }
 
-        $result = $sth->fetchAll(\PDO::FETCH_CLASS, $className);
-        if(empty($result)){
+        $result = $sth->fetchAll(PDO::FETCH_CLASS, $className);
+        if (empty($result)) {
             return null;
-    }
+        }
         return $result;
     }
 

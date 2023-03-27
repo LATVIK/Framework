@@ -1,10 +1,13 @@
 <?php
+
+use service\UsersAuthService;
+
 include 'service/include/func.php';
 include 'service/include/settings.php';
 
 spl_autoload_register('myAutoloader');
 
-$user = \service\UsersAuthService::getUserByToken();
+$user = UsersAuthService::getUserByToken();
 
 $route = '';
 if (isset($_GET['route'])) {

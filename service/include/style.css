@@ -162,11 +162,7 @@ body {
 
 .new-user-card {
   width: 460px;
-}
-
-#new-user-form {
   height: 395px;
-/*  replace in .new-user-card */
 }
 
 .card-form button {
@@ -231,7 +227,7 @@ body {
   float: right;
 }
 
-.post .delete img{
+.post .delete img {
   height: 1rem;
   width: 1rem;
   float: right;
@@ -287,6 +283,7 @@ body {
   width: 100%;
   height: auto;
   margin-top: 15%;
+  max-height: 90%;
 }
 
 #user_info {

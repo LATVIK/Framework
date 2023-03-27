@@ -20,7 +20,6 @@
     </ul>
   </div>
 
-  <!--  TODO: Update after implementing user authorization -->
   <div id="gt-account-title">
       <?php
       if (!$this->user) {
@@ -28,7 +27,7 @@
       } else {
           echo '</a> <span><a href="/exit" >Log out</a></span>';
       }
-                 ?>
+      ?>
   </div>
 
 </header>

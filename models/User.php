@@ -3,6 +3,7 @@
 namespace models;
 
 use service\Exception\InvalidArgumentException;
+use service\Exception\UnknownException;
 
 class User extends BaseModel
 {
@@ -12,31 +13,42 @@ class User extends BaseModel
 
     protected string $passwordHash;
 
-    protected string $icon;
+    protected ?string $icon;
 
-    protected $createdDt;
+    protected ?string $createdDt = null;
 
-    protected string $authToken;
+    protected ?string $authToken;
 
 
-    public function getAuthToken()
+    public function getAuthToken(): ?string
     {
         return $this->authToken;
     }
 
-    public function setAuthToken($authToken): void
+    private function setAuthToken($authToken): void
     {
         $this->authToken = $authToken;
     }
 
-    public function getPasswordHash()
+    public function getPasswordHash(): string
     {
         return $this->passwordHash;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function setPasswordHash($passwordHash): void
     {
-        $this->passwordHash = $passwordHash;
+        if (!$passwordHash) {
+            throw new InvalidArgumentException('Empty password');
+        }
+
+        if (mb_strlen($passwordHash) < 5) {
+            throw new InvalidArgumentException('The password must be at least 5 characters');
+        }
+
+        $this->passwordHash = password_hash($passwordHash, PASSWORD_DEFAULT);
     }
 
     public function getUsername(): string
@@ -44,8 +56,27 @@ class User extends BaseModel
         return $this->username;
     }
 
-    public function setUsername(string $username): void
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function setUsername(?string $username): void
     {
+        if (!$username) {
+            throw new InvalidArgumentException('Empty username');
+        }
+
+        if (mb_strlen($username) < 5) {
+            throw new InvalidArgumentException('The username must be at least 5 characters');
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
+            throw new InvalidArgumentException('Username can consist only of Latin alphabet characters and numbers');
+        }
+
+        if (static::findByColumn('username', $username) !== null) {
+            throw new InvalidArgumentException('User with this username already exists');
+        }
+
         $this->username = $username;
     }
 
@@ -54,8 +85,19 @@ class User extends BaseModel
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function setEmail(?string $email): void
     {
+        if (!$email) {
+            throw new InvalidArgumentException('Empty email');
+        }
+
+        if (static::findByColumn('email', $email) !== null) {
+            throw new InvalidArgumentException('User with this email already exists');
+        }
+
         $this->email = $email;
     }
 
@@ -64,19 +106,26 @@ class User extends BaseModel
         return $this->icon;
     }
 
-    public function setIcon($icon): void
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function setIcon(array $icon): void
     {
-        $this->icon = $icon;
+        $iconName = '';
+        if ($icon['name'] != '') {
+            if ($icon['size'] == 0) {
+                throw new InvalidArgumentException('File size exceeded, image not uploaded');
+            }
+            $iconName = uniqid();
+            copy($icon['tmp_name'], 'res/photo/' . $iconName);
+        }
+
+        $this->icon = $iconName;
     }
 
-    public function getCreatedDt()
+    public function getCreatedDt(): ?string
     {
         return $this->createdDt;
-    }
-
-    public function setCreatedDt($createdDt): void
-    {
-        $this->createdDt = $createdDt;
     }
 
     public static function getTableName(): string
@@ -86,72 +135,35 @@ class User extends BaseModel
 
     /**
      * @throws InvalidArgumentException
+     * @throws UnknownException
      */
     public static function signUp(array $userData, array $userIcon = []): User
     {
-        if (empty($userData['username'])) {
-            throw new InvalidArgumentException('Empty username');
-        }
-
-        if (mb_strlen($userData['username']) < 5) {
-            throw new InvalidArgumentException('The username must be at least 5 characters');
-        }
-
-        if (!preg_match('/^[a-zA-Z0-9]+$/', $userData['username'])) {
-            throw new InvalidArgumentException('Username can consist only of Latin alphabet characters and numbers');
-        }
-
-        if (static::findByColumn('username', $userData['username']) !== null) {
-            throw new InvalidArgumentException('User with this username already exists');
-        }
-
-        if (empty($userData['email'])) {
-            throw new InvalidArgumentException('Empty email');
-        }
-
-        if (static::findByColumn('email', $userData['email']) !== null) {
-            throw new InvalidArgumentException('User with this email already exists');
-        }
-
-        if (empty($userData['password'])) {
-            throw new InvalidArgumentException('Empty password');
-        }
-
-        if (mb_strlen($userData['password']) < 5) {
-            throw new InvalidArgumentException('The password must be at least 5 characters');
-        }
-
         if ($userData['password'] != $userData['repeat_password']) {
             throw new InvalidArgumentException('Password mismatch');
         }
 
-        if ($userIcon['name'] != '') {
-            if ($userIcon['size'] == 0) {
-                throw new InvalidArgumentException('File size exceeded, image not uploaded');
-            }
-        }
-
         $user = new User();
-        $user->username = $userData['username'];
-        $user->email = $userData['email'];
-        $user->passwordHash = password_hash($userData['password'], PASSWORD_DEFAULT);
-        $iconName = '';
+        $user->setUsername($userData['username']);
+        $user->setEmail($userData['email']);
+        $user->setPasswordHash($userData['password']);
 
-        if ($userIcon['name'] != '') {
-            $iconName = uniqid();
-            copy($userIcon['tmp_name'], 'res/photo/' . $iconName);
+        try {
+            $user->setIcon($userIcon);
+        } catch (InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        } finally {
+            $user->refreshAuthToken();
+
+            $user->save();
+
+            return $user;
         }
-
-        $user->icon = $iconName;
-        $user->refreshAuthToken();
-
-        $user->save();
-
-        return $user;
     }
 
     /**
      * @throws InvalidArgumentException
+     * @throws UnknownException
      */
     public static function login(array $loginData): User
     {
@@ -178,8 +190,15 @@ class User extends BaseModel
         return $user;
     }
 
-    private function refreshAuthToken()
+    /**
+     * @throws UnknownException
+     */
+    private function refreshAuthToken(): void
     {
-        $this->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
+        try {
+            $this->setAuthToken(sha1(random_bytes(100)) . sha1(random_bytes(100)));
+        } catch (\Exception $e) {
+            throw new UnknownException($e->getMessage());
+        }
     }
 }
